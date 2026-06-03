@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academics | Campus Suite</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="academics.css">
+    <script src="https://kit.fontawesome.com/6fa938cd98.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav>
+        <h1 class="logo">Campus Suite</h1>
+        <ul id="sidemenu">
+            <li><a href="main.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="modules.html">Modules</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li class="logout"><a href="registration.html"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+    </nav>
+
+    <div class="academics-container">
+        <h1 class="sub-title">Academics Portal</h1>
+        
+        <div class="academics-menu-bar glass-panel">
+            <a href="#" class="menu-item active" onclick="showTab(event, 'attendance')">
+                <i class="fa-solid fa-list-check"></i> Attendance
+            </a>
+            <a href="#" class="menu-item" onclick="showTab(event, 'timetable')">
+                <i class="fa-solid fa-calendar-days"></i> Time Table
+            </a>
+            <a href="#" class="menu-item" onclick="showTab(event, 'sem-reg')">
+                <i class="fa-solid fa-file-signature"></i> Semester Registration
+            </a>
+            <a href="#" class="menu-item" onclick="showTab(event, 'enrollment')">
+                <i class="fa-solid fa-id-badge"></i> Enrollment Form
+            </a>
+            <a href="#" class="menu-item" onclick="showTab(event, 'abc-acc')">
+                <i class="fa-solid fa-building-columns"></i> ABC Account No.
+            </a>
+            <a href="#" class="menu-item" onclick="showTab(event, 'upload')">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Document Upload
+            </a>
+        </div>
+
+        <!-- 1. Attendance Tab -->
+        <div class="academics-content glass-panel" id="content-attendance">
+            <h2><i class="fa-solid fa-list-check"></i> Check Attendance</h2>
+            <p>View your subject-wise attendance percentage and logs. (Less than 50% restricts booking!)</p>
+            
+            <form class="dummy-form" onsubmit="checkAttendance(event)" style="margin-bottom:20px;">
+                <input type="text" id="attName" placeholder="Enter your Name to verify" class="dummy-input" required>
+                <button type="submit" class="btn-fancy full-w"><i class="fa-solid fa-magnifying-glass"></i> View My Attendance</button>
+            </form>
+
+            <div id="attendanceDisplay" style="display:none; width: 100%;">
+                <h3 id="attResultLabel" style="margin-bottom:15px; color:var(--primary-color);">Results for...</h3>
+                <div class="dummy-table-wrapper">
+                    <table class="dummy-table">
+                        <tr><th>Subject</th><th>Classes Held</th><th>Attended</th><th>Percentage</th></tr>
+                        <tr><td>Overall Average</td><td>100</td><td id="valAttended">...</td><td><span id="valPercent" style="font-weight:bold;">...</span></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Time Table Tab -->
+        <div class="academics-content glass-panel" id="content-timetable" style="display: none;">
+            <h2><i class="fa-solid fa-calendar-days"></i> Weekly Time Table</h2>
+            <p>Your current semester class schedule.</p>
+            <div class="dummy-table-wrapper">
+                <table class="dummy-table">
+                    <tr><th>Time / Day</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th></tr>
+                    <tr><th>09:00 AM</th><td>Data Structures</td><td>OS</td><td>Networking</td><td>Data Structures</td><td>Lab</td></tr>
+                    <tr><th>10:00 AM</th><td>OS</td><td>DBMS</td><td>Data Structures</td><td>Networking</td><td>Lab</td></tr>
+                    <tr><th>11:00 AM</th><td>DBMS</td><td>Networking</td><td>OS</td><td>DBMS</td><td>Seminar</td></tr>
+                </table>
+            </div>
+            <button class="btn-fancy" style="margin-top:20px;"><i class="fa-solid fa-download"></i> Download PDF</button>
+        </div>
+
+        <!-- 3. Semester Registration -->
+        <div class="academics-content glass-panel" id="content-sem-reg" style="display: none;">
+            <h2><i class="fa-solid fa-file-signature"></i> Semester Registration</h2>
+            <p>Register for next semester's core and elective subjects.</p>
+            <form class="dummy-form" onsubmit="submitSemRegistration(event)">
+                <input type="text" id="semRegName" placeholder="Enter your Registered Name" class="dummy-input" required>
+                <select class="dummy-input" required>
+                    <option value="">Select Semester</option>
+                    <option>Semester 4</option>
+                    <option>Semester 5</option>
+                </select>
+                <button type="submit" class="btn-fancy">Submit Registration <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+        </div>
+
+        <!-- 4. Enrollment Form -->
+        <div class="academics-content glass-panel" id="content-enrollment" style="display: none;">
+            <h2><i class="fa-solid fa-id-badge"></i> Update Enrollment Details</h2>
+            <p>Verify and update your basic enrollment to unlock Student Access.</p>
+            <form class="dummy-form" style="max-width: 600px; display:flex; flex-wrap:wrap; gap:15px;" onsubmit="submitEnrollment(event)">
+                <input type="text" id="enrollFirstName" placeholder="First Name" class="dummy-input" style="flex:1; min-width:200px;" required>
+                <input type="text" id="enrollLastName" placeholder="Last Name" class="dummy-input" style="flex:1; min-width:200px;" required>
+                <input type="text" id="enrollStudentId" placeholder="Enrollment Number" class="dummy-input" style="width:100%;" required>
+                <input type="date" class="dummy-input" style="flex:1; min-width:200px;" required>
+                <!-- Tool for testing logic: Allow setting custom attendance during enrollment -->
+                <input type="number" id="enrollAttendanceMock" placeholder="Mock Initial Attendance (e.g. 45 or 80)" class="dummy-input" style="flex:1; min-width:200px;" required min="0" max="100">
+                <button type="submit" class="btn-fancy" style="width:100%;">Save Details & Enroll</button>
+            </form>
+        </div>
+
+        <!-- 5. ABC Account Number -->
+        <div class="academics-content glass-panel" id="content-abc-acc" style="display: none;">
+            <h2><i class="fa-solid fa-building-columns"></i> Academic Bank of Credits (ABC)</h2>
+            <p>Enter your 12-digit ABC ID to sync your academic credits globally.</p>
+            <form class="dummy-form" onsubmit="submitABC(event)">
+                <input type="text" id="abcName" placeholder="Enter your Registered Name" class="dummy-input" required>
+                <input type="text" id="abcId" placeholder="12-Digit ABC Account No." class="dummy-input" maxlength="12" required>
+                <button type="submit" class="btn-fancy"><i class="fa-solid fa-link"></i> Link Account</button>
+            </form>
+            <p style="margin-top:20px; font-size:14px;"><a href="#" style="color:var(--secondary-color);">Don't have an ABC ID? Create one here.</a></p>
+        </div>
+
+        <!-- 6. Document Upload -->
+        <div class="academics-content glass-panel" id="content-upload" style="display: none;">
+            <h2><i class="fa-solid fa-cloud-arrow-up"></i> Document Upload</h2>
+            <p>Upload your necessary educational documents here (Max 5MB per file).</p>
+            
+            <div class="upload-zone">
+                <i class="fa-solid fa-file-arrow-up" style="font-size: 50px; color: var(--secondary-color); margin-bottom:15px;"></i>
+                <h3>Drag & Drop Files Here</h3>
+                <p>or</p>
+                <button class="btn-fancy btn-small" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+                <input type="file" id="fileInput" style="display:none;">
+            </div>
+
+            <div class="dummy-table-wrapper" style="margin-top: 30px;">
+                <table class="dummy-table">
+                    <tr><th>Document Name</th><th>Status</th><th>Action</th></tr>
+                    <tr><td>Higher Secondary Certificate</td><td><span style="color:var(--accent-color);">Verified</span></td><td><i class="fa-solid fa-eye" style="cursor:pointer; color:var(--text-light);"></i></td></tr>
+                    <tr><td>Aadhar Card</td><td><span style="color:#f59e0b;">Pending</span></td><td><i class="fa-solid fa-trash" style="cursor:pointer; color:#ef4444;"></i></td></tr>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="academics.js"></script>
+</body>
+</html>

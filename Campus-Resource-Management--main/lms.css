@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  
+
+  .sub-title{
+    padding-bottom: 7rem;
+    font-size:60px ;
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+    text-decoration: underline;
+  }
+  
+  .container { width: 100%; min-height: 100vh; padding: 2rem; display: flex; flex-direction: column; align-items: center; }                
+  
+  h1, h2 {
+    text-align: center;
+    color: black;
+  }
+
+  .std-mng{
+   padding: 2rem;
+   filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+
+  }
+
+  .std-list{
+   padding: 2rem;
+   filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+  }
+  
+  .form-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+  }
+  
+  .form-container input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .form-container button {
+    padding: 8px 16px;
+    background-color: #22C55E;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .form-container button:hover {
+    background-color:  green
+  }
+  
+  .student-list table {
+    width: 100%;
+    border-collapse: collapse;
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+  }
+  
+  .student-list th, .student-list td {
+    padding: 10px;
+    border-bottom: 1px solid white;
+    text-align: center;
+  }
+  
+  .delete-btn {
+    color: white;
+    background-color: #f44336;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .delete-btn:hover {
+    background-color: red;
+  }

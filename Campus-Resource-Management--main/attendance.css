@@ -1,0 +1,86 @@
+/* General Styles */
+
+
+header {
+    text-align: center;
+    padding-bottom: 5rem;
+    font-size:30px ;
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+    text-decoration: underline;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+}
+
+.htwo{
+    filter: drop-shadow(20px 20px 34px rgba(0, 0, 0, 0.6));
+}
+
+/* Form Styles */
+.attendance-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    /* box-shadow: 20px 20px 34px rgba(0, 0, 0, 0.6); */
+    margin-bottom: 20px;
+}
+
+.attendance-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.attendance-form input, 
+.attendance-form select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;/
+    /* box-shadow: 20px 20px 34px rgba(0, 0, 0, 0.6); */
+}
+
+.attendance-form button {
+    display: inline-block;
+    padding: 15px 20px;
+    background-color: #22C55E;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Table Styles */
+.attendance-records {
+    width: 100%;
+    max-width: 800px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, 
+table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+table th {
+    background-color: #f2f2f2;
+}
+
+
+
+

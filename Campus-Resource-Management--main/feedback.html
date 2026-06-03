@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | Campus Suite</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="feedback.css">
+    <script src="https://kit.fontawesome.com/6fa938cd98.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav>
+        <h1 class="logo">Campus Suite</h1>
+        <ul id="sidemenu">
+            <li><a href="main.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="modules.html">Modules</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li class="logout"><a href="registration.html"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+    </nav>
+
+    <!-- Toast Notification for admin send -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-envelope-circle-check"></i> <span id="toast-msg">Feedback Successfully Sent to Admin!</span>
+    </div>
+
+    <div class="feedback-container">
+        <h1 class="sub-title">System Feedback</h1>
+        
+        <div class="glass-panel feedback-card">
+            <h2 style="margin-bottom:10px;"><i class="fa-solid fa-comments"></i> We Value Your Experience</h2>
+            <p style="color:var(--text-light); margin-bottom:30px;">Help us improve by sharing your Campus Suite experience.</p>
+
+            <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                
+                <div class="role-selector">
+                    <label>
+                        <input type="radio" name="userRole" value="student" checked onchange="toggleIdField('student')"> Student
+                    </label>
+                    <label>
+                        <input type="radio" name="userRole" value="faculty" onchange="toggleIdField('faculty')"> Faculty
+                    </label>
+                </div>
+
+                <div class="input-group">
+                    <label for="userName">Full Name</label>
+                    <input type="text" id="userName" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="input-group" id="idGroup">
+                    <label id="idLabel" for="userId">Student ID</label>
+                    <input type="text" id="userId" placeholder="Enter your Student ID" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="userEmail">Email Address</label>
+                    <input type="email" id="userEmail" placeholder="Enter your college email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="userFeedback">How was your experience using the system?</label>
+                    <textarea id="userFeedback" rows="5" placeholder="Tell us what you liked or what could be improved..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-fancy submit-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Submit to Admin
+                </button>
+            </form>
+
+            <!-- Success State -->
+            <div id="successState" style="display:none; text-align:center; padding: 40px 0;">
+                <i class="fa-regular fa-face-smile" style="font-size: 80px; color: var(--accent-color); margin-bottom: 20px;"></i>
+                <h2 style="color: var(--primary-color);">Thank You!</h2>
+                <p style="font-size: 18px; color: var(--text-dark); margin-top: 10px;">Your feedback has been securely sent to the System Admin.</p>
+                <button class="btn-fancy" style="margin-top:20px;" onclick="resetForm()">Submit Another</button>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script src="feedback.js"></script>
+</body>
+</html>

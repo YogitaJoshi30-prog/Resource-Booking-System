@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Management | Campus Suite</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="resource.css">
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/6fa938cd98.js" crossorigin="anonymous"></script>
+    <!-- FullCalendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav>
+        <h1 class="logo">Campus Suite</h1>
+        <ul id="sidemenu">
+            <li><a href="main.html">Home</a></li>
+            <li><a href="modules.html">Modules</a></li>
+            <li class="nav-role-select">
+                <i class="fa-solid fa-user-shield"></i>
+                <select id="roleSelect" onchange="switchRole(this.value)">
+                    <option value="student">Student View</option>
+                    <option value="faculty">Faculty View</option>
+                    <option value="admin">Admin View</option>
+                </select>
+            </li>
+            <li class="logout"><a href="registration.html"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+        </ul>
+    </nav>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Success!</span>
+    </div>
+
+    <div class="resource-layout container">
+        
+        <!-- TOP: LIVE RESOURCE MAP -->
+        <section class="live-map-section glass-panel">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-layer-group"></i> Live Resource Map</h2>
+                <div class="filters">
+                    <select id="filterCap" onchange="renderGrid()">
+                        <option value="all">Any Capacity</option>
+                        <option value="50">&gt; 50 Seats</option>
+                    </select>
+                    <select id="filterEquip" onchange="renderGrid()">
+                        <option value="all">Any Equip</option>
+                        <option value="gpu">GPU Working</option>
+                        <option value="projector">Projector</option>
+                    </select>
+                </div>
+            </div>
+            <div class="resource-grid" id="resourceGrid">
+                <!-- Grid populated by JS -->
+                <div class="shimmer-box" style="height:100px; border-radius:12px;"></div>
+                <div class="shimmer-box" style="height:100px; border-radius:12px;"></div>
+                <div class="shimmer-box" style="height:100px; border-radius:12px;"></div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC DASHBOARDS -->
+
+        <section id="dash-student" class="dashboard-view active">
+            <div class="dash-columns">
+                <div class="glass-panel text-center">
+                    <h3><i class="fa-solid fa-paper-plane"></i> Resource Request</h3>
+                    <p class="timer-text">Students must request access before booking a resource.</p>
+                    <button class="btn-fancy btn-pass" onclick="viewMyRequests()">
+                        <i class="fa-solid fa-clock"></i> View My Requests
+                    </button>
+                </div>
+                <div class="glass-panel usage-stats">
+                    <h3><i class="fa-solid fa-chart-pie"></i> Usage Stats</h3>
+                    <p>Weekly Hours Used (4 / 10 Hrs)</p>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 40%;"></div>
+                    </div>
+                    <button class="btn-fancy full-w mt-20" onclick="showToast('Searching for closest room...')">
+                        <i class="fa-solid fa-magnifying-glass"></i> Find Study Room
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FACULTY VIEW -->
+        <section id="dash-faculty" class="dashboard-view">
+            <div class="glass-panel">
+                 <h3><i class="fa-solid fa-chalkboard-user"></i> Faculty Actions</h3>
+                 <div class="glass-panel request-table-panel">
+                    <div class="request-table-header">
+                        <h3><i class="fa-solid fa-user-check"></i> Student Resource Requests</h3>
+                        <button type="button" class="btn-fancy btn-small" onclick="clearResolvedRequests()">
+                            Clear reviewed
+                        </button>
+                    </div>
+                    <div class="table-scroll request-table-scroll">
+                        <table class="request-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Resource</th>
+                                    <th>Requested</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="facultyRequestTableBody">
+                                <tr><td colspan="5" class="empty-row">No requests yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                 <div class="dash-columns">
+                    <div class="action-card">
+                        <i class="fa-solid fa-calendar-check icon-huge"></i>
+                        <h4>Bulk Booking</h4>
+                        <p>Book recurring slots for entire semester.</p>
+                        <button class="btn-fancy btn-small" onclick="openModal('Bulk Booking Editor')">Open Editor</button>
+                    </div>
+                    <div class="action-card override-card">
+                        <i class="fa-solid fa-triangle-exclamation icon-huge"></i>
+                        <h4>Priority Override</h4>
+                        <p>Request takeover of an existing booking for exam purposes.</p>
+                        <button class="btn-fancy btn-small warning-btn" onclick="showToast('Override requested. Waiting for admin approval.')">Override Current</button>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- ADMIN VIEW -->
+        <section id="dash-admin" class="dashboard-view">
+            <div class="glass-panel admin-add-resource-panel">
+                <div class="request-table-header">
+                    <h3><i class="fa-solid fa-plus"></i> Add New Resource</h3>
+                    <p class="admin-hint">Added resources will appear in Student and Faculty views.</p>
+                </div>
+                <form class="admin-add-resource-form" onsubmit="addNewResource(event)">
+                    <div class="admin-form-row">
+                        <label for="newResName">Resource name</label>
+                        <input id="newResName" type="text" placeholder="e.g. Classroom 202" required>
+                    </div>
+                    <div class="admin-form-cols">
+                        <div class="admin-form-row">
+                            <label for="newResType">Type</label>
+                            <select id="newResType" required>
+                                <option value="Classroom">Classroom</option>
+                                <option value="Lab">Lab</option>
+                                <option value="Hall">Hall</option>
+                                <option value="Study Room">Study Room</option>
+                            </select>
+                        </div>
+                        <div class="admin-form-row">
+                            <label for="newResCapacity">Capacity</label>
+                            <input id="newResCapacity" type="number" min="1" value="30" required>
+                        </div>
+                    </div>
+                    <div class="admin-form-row">
+                        <label>Equipment</label>
+                        <div class="admin-equip-row">
+                            <label class="admin-checkbox"><input id="newResEquipProjector" type="checkbox"> Projector</label>
+                            <label class="admin-checkbox"><input id="newResEquipGpu" type="checkbox"> GPU</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-fancy btn-small">
+                        <i class="fa-solid fa-circle-plus"></i> Add resource
+                    </button>
+                </form>
+            </div>
+
+            <div class="glass-panel admin-bookings-panel">
+                <div class="request-table-header">
+                    <h3><i class="fa-solid fa-clipboard-list"></i> Resource Booking Status</h3>
+                    <p class="admin-hint">See which resources are booked, and delete booking time slots.</p>
+                </div>
+                <div class="table-scroll request-table-scroll admin-table-scroll">
+                    <table class="request-table admin-resource-table">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Booked By / Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminBookingTableBody">
+                            <tr><td colspan="5" class="empty-row">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="dash-columns">
+                <div class="glass-panel">
+                    <h3><i class="fa-solid fa-fire"></i> Campus Heatmap Analytics</h3>
+                    <canvas id="heatmapChart"></canvas>
+                </div>
+                <div class="glass-panel">
+                    <h3><i class="fa-solid fa-tower-broadcast"></i> Live Feed (Door Scans)</h3>
+                    <ul class="live-feed" id="liveFeed">
+                        <li><span class="badge green">In</span> Prof. Sharma entering Room 201</li>
+                        <li><span class="badge red">No-Show</span> Cancelled Lab B (15m passed)</li>
+                        <li><span class="badge green">In</span> Student 404 entering Library</li>
+                    </ul>
+                    <button class="btn-fancy full-w mt-20" onclick="simulateDoorScan()"><i class="fa-solid fa-qrcode"></i> Simulate Door Scan</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- BOOKING SLIDE-OUT MODAL -->
+    <div class="slide-overlay" id="slideOverlay" onclick="closeModal()"></div>
+    <div class="slide-panel" id="bookingModal">
+        <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-times"></i></button>
+        <h2 id="modalResourceName">Select Time Slot</h2>
+        <p id="modalBookingStatus" class="modal-booking-hint"></p>
+        <div id="existingBookingsList" class="existing-bookings"></div>
+        <form id="bookingForm" class="booking-form" onsubmit="submitBooking(event)">
+            <label for="bookDate">Date</label>
+            <input type="date" id="bookDate" required>
+            <label>From</label>
+            <div class="time-picker-row">
+                <select id="bookStartHour" required aria-label="Start hour"></select>
+                <span class="time-colon">:</span>
+                <select id="bookStartMinute" required aria-label="Start minute"></select>
+                <select id="bookStartAmPm" required aria-label="Start AM or PM">
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
+            <label>To</label>
+            <div class="time-picker-row">
+                <select id="bookEndHour" required aria-label="End hour"></select>
+                <span class="time-colon">:</span>
+                <select id="bookEndMinute" required aria-label="End minute"></select>
+                <select id="bookEndAmPm" required aria-label="End AM or PM">
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
+            <p class="time-picker-note">Booking hours: 8:00 AM – 8:00 PM</p>
+            <button type="submit" class="btn-fancy full-w mt-20">
+                <i class="fa-solid fa-calendar-check"></i> Confirm Booking
+            </button>
+        </form>
+        <h3 class="calendar-heading">Schedule for this resource</h3>
+        <div id="calendar"></div>
+    </div>
+
+    <!-- SCANNER MOCK MODAL -->
+    <div class="scanner-modal-overlay" id="scannerModal">
+        <div class="scanner-box" id="scannerBox">
+            <i class="fa-solid fa-qrcode scan-icon"></i>
+            <h2 id="scanResult">Scanning...</h2>
+        </div>
+    </div>
+
+    <script src="resource.js"></script>
+</body>
+</html>

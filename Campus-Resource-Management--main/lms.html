@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management | Campus Suite</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="lms.css">
+  <script src="https://kit.fontawesome.com/6fa938cd98.js" crossorigin="anonymous"></script>
+</head>
+<body>
+ 
+  <nav>
+    <h1 class="logo">Campus Suite</h1>
+    <ul id="sidemenu">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+        <li class="logout"><a href="registration.html"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+    </ul>
+  </nav>
+
+  <div id="head">
+  <h1 class="sub-title">Student Entry</h1>
+
+  <div class="container" style="max-width: 1200px; display:flex; flex-wrap:wrap; gap:30px; background: transparent; box-shadow:none;">
+    
+    <!-- LEFT: Registration -->
+    <div class="glass-panel" style="flex:1; min-width:300px;">
+        <h2><i class="fa-solid fa-user-plus"></i> Register Authorized Student</h2>
+        <p style="font-size:14px; margin-bottom:15px;">Add students to allow them to book resources.</p>
+        <div class="form-container">
+            <input type="text" id="name" placeholder="Student Name / ID">
+            <input type="number" id="age" placeholder="Age">
+            <input type="text" id="grade" placeholder="Department / Course">
+            <button onclick="addStudent()" class="btn-fancy" style="width:100%; border:none;">Register Student</button>
+        </div>
+    </div>
+    
+    <!-- RIGHT: Student List -->
+    <div class="glass-panel" id="student-list" style="flex:2; min-width:300px; max-height:400px; overflow-y:auto;">
+      <h2><i class="fa-solid fa-users"></i> Authorized Students List</h2>
+      <table style="width:100%; margin-top:15px; border-collapse:collapse;">
+        <thead>
+          <tr style="text-align:left; border-bottom:2px solid var(--primary-color);">
+            <th style="padding:10px;">Name</th>
+            <th style="padding:10px;">Age</th>
+            <th style="padding:10px;">Course</th>
+            <th style="padding:10px;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <!-- Students dynamically added -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- BOTTOM: Resource Booking Scarcity Tracker -->
+  <div class="container glass-panel" style="max-width: 1200px; margin-top:30px;">
+    <h2><i class="fa-solid fa-chart-line"></i> Daily Resource Requests (Students)</h2>
+    <p style="font-size:14px; margin-bottom:20px;">Track bookings attempted by students and gauge resource scarcity.</p>
+    
+    <div style="display:flex; justify-content:space-around; margin-bottom:25px; text-align:center;">
+        <div><h3 style="font-size:30px; color:var(--primary-color);" id="stTotal">0</h3><p>Total Requests</p></div>
+        <div><h3 style="font-size:30px; color:var(--accent-color);" id="stApproved">0</h3><p>Approved (Got It)</p></div>
+        <div><h3 style="font-size:30px; color:#ef4444;" id="stDenied">0</h3><p>Denied / Scarcity</p></div>
+    </div>
+
+    <div style="max-height:250px; overflow-y:auto;">
+        <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+                <tr style="border-bottom:2px solid var(--primary-color);">
+                    <th style="padding:10px;">Student Name</th>
+                    <th style="padding:10px;">Resource</th>
+                    <th style="padding:10px;">Time Requested</th>
+                    <th style="padding:10px;">Status</th>
+                </tr>
+            </thead>
+            <tbody id="studentBookingTracker">
+            </tbody>
+        </table>
+    </div>
+
+  </div>
+
+</div>
+
+  <script src="lms.js"></script>
+</body>
+</html>
